@@ -17,13 +17,19 @@ import java.util.stream.Stream;
  **/
 public class E02StreamBase {
     /**
-     * 中间操作方法：
+     * stream的三个组成：数据源/中间操作终止操作。
+     *
+     * 中间操作是对数据的加工，是lazy操作，
+     * 并不会立马启动，而是等待终止操作才会执行!
+     *
+     * @数据源
+     * @中间操作方法：
      * distinct 去重->new Stream
      * filter 过滤->new Stream
      * map 再加工->new Stream
      * flatMap 平铺层级关系->new Stream
      * ----------------
-     * 终止操作方法：
+     * @终止操作方法：
      * count 计数->int
      * anyMatch 只要有一个为真 则为真->bool
      * allMatch 全部为真 则为真->bool
@@ -45,7 +51,7 @@ public class E02StreamBase {
         flatMap();
         //map 再加工
         mapItem(list);
-        //filter 过滤
+        //filter 过滤，避免使用 if/else
         filterItem(list);
         //match 匹配
         matchItem(list);
