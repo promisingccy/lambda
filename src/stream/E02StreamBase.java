@@ -1,7 +1,11 @@
 package stream;
 
+import stream.entity.CustBook;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -14,26 +18,75 @@ import java.util.stream.Stream;
 public class E02StreamBase {
     /**
      * 中间操作方法：
-     * distinct 去重
-     * filter 过滤
+     * distinct 去重->new Stream
+     * filter 过滤->new Stream
+     * map 再加工->new Stream
+     * flatMap 平铺层级关系->new Stream
      * ----------------
      * 终止操作方法：
-     * count 计数
-     * anyMatch 只要有一个为真 则为真
-     * allMatch 全部为真 则为真
-     * noneMatch 都不为真 则为真
+     * count 计数->int
+     * anyMatch 只要有一个为真 则为真->bool
+     * allMatch 全部为真 则为真->bool
+     * noneMatch 都不为真 则为真->bool
+     * reduce  初始值，遍历算法->int
+     * collect 将stream转为集合
      */
     public static void main(String[] args){
-        List<Integer> integers = Arrays.asList(1, 2, 3, 4);
+        List<Integer> list = Arrays.asList(1, 2, 3, 4);
 
-        //去重后计数
-        distCount(integers);
-        //match 匹配
-        matchItem(integers);
+        //collect 将stream转为集合
+        collectStream(list);
+
+        System.out.println("=================");
+
+        //reduce  初始值，遍历算法
+        reduceItem(list);
+        //flatMap 平铺层级关系
+        flatMap();
+        //map 再加工
+        mapItem(list);
         //filter 过滤
-        filterItem(integers);
+        filterItem(list);
+        //match 匹配
+        matchItem(list);
+        //去重后计数
+        distCount(list);
+    }
 
+    //collect 将stream转为集合
+    private static void collectStream(List<Integer> list) {
+        List<Integer> res = list.stream().map(e -> e + 3).collect(Collectors.toList());
+        //[4, 5, 6, 7]
+        System.out.println(res);
+    }
 
+    //reduce  初始值，遍历算法
+    private static void reduceItem(List<Integer> list) {
+        Integer addAll = list.stream().reduce(100, (a, b) -> a + b);
+        //110
+        System.out.println(addAll);
+        Integer removeAll = list.stream().reduce(100, (a, b) -> a - b);
+        //90
+        System.out.println(removeAll);
+    }
+
+    private static void flatMap() {
+        ArrayList<CustBook> users = new ArrayList<>();
+        users.add(new CustBook(Arrays.asList("ccy","ddy")));
+        Stream<Stream<String>> streamMap = users.stream().map(user -> user.getBookName().stream());
+        //java.util.stream.ReferencePipeline$Head@7ba4f24f
+        streamMap.forEach(e-> System.out.println(e));
+
+        Stream<String> streamFlatMap = users.stream().flatMap(user -> user.getBookName().stream());
+        //ccy ddy
+        streamFlatMap.forEach(e-> System.out.println(e));
+    }
+
+    //map 再加工
+    private static void mapItem(List<Integer> list) {
+        Stream<Integer> newStream = list.stream().map(e -> e + 10);
+        //11 12 13 14
+        newStream.forEach(e-> System.out.println(e));
     }
 
     //过滤偶数
@@ -59,6 +112,7 @@ public class E02StreamBase {
     //去重后计数
     private static void distCount(List<Integer> integers) {
         long count = integers.stream().distinct().count();
+        //4
         System.out.println(count);
     }
 

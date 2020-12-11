@@ -2,6 +2,7 @@ package stream;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -24,6 +25,11 @@ public class E01GetStream {
         List<String> list = Arrays.asList("a", "b", "c");
         //多线程输出 顺序不保证  b c a
         list.parallelStream().forEach(e-> System.out.println(e));
+
+        /************* stream 与 list 互转 *************/
+        List<String> listFromStream = stream.collect(Collectors.toList());
+        //[a, b, c]
+        System.out.println(listFromStream);
 
     }
 
