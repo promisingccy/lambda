@@ -1,6 +1,6 @@
 # lambda
 stream lambda usage demos
-
+```
 ##### GetStream
 
 /************* 通过 .stream 获取 *************/
@@ -135,3 +135,4 @@ List<String> listFromStream = list.stream().map(String::toUpperCase).collect(Col
 //[ONE, TWO, THREE, FOUR]
 System.out.println(listFromStream);
 
+```
